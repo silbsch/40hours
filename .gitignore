@@ -1,2 +1,5 @@
 # Ignore env file
 .env
+
+# ignore sample-folder in root
+/sample/

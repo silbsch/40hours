@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 require __DIR__ . '/bootstrap.php';
 ?>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
