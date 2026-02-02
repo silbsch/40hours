@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 // New helpers + PDO repository
 require_once __DIR__ . '/bootstrap.php';
-require_once __DIR__ . '/functions/calender.php';
+require_once __DIR__ . '/functions/calendar.php';
 require_once __DIR__ . '/functions/database.php';
 require_once __DIR__ . '/functions/helpers.php';
 require_once __DIR__ . '/functions/layout.php';

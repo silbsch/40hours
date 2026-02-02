@@ -53,7 +53,7 @@ function send_mail(
         if ($icsData !== null) {
             $mail->addStringAttachment(
                 $icsData,
-                'calendar.ics',
+                FORTY_HOURS_NAME.'.ics',
                 'base64',
                 'text/calendar; method=REQUEST; charset=UTF-8'
             );

@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/bootstrap.php';
-require_once __DIR__ . '/functions/calender.php';
+require_once __DIR__ . '/functions/calendar.php';
 require_once __DIR__ . '/functions/database.php';
 require_once __DIR__ . '/functions/helpers.php';
 require_once __DIR__ . '/functions/layout.php';
@@ -48,6 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'end'   => sanitize($end->format('d.m.Y H:i')),
             'public'=> sanitize(($booking['public'] === 1 ? 'Ja' : 'Nein')),
             'title' => sanitize($booking['title']),
+            'page_title' => 'Anmeldung bestätigt',
         ]);
 
         $mailbody ="Hallo ".preventAutoLinksInvisible($booking['name']).",<br/>";
@@ -113,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             'start' => sanitize($start->format('d.m.Y H:i')),
             'end'   => sanitize($end->format('d.m.Y H:i')),
             'completion' => sanitize((new DateTimeImmutable($completion_on))->format('d.m.Y H:i')),
-            'page_title' => 'Reservierung bestätigt',
+            'page_title' => 'Anmeldung bestätigt',
         ]);
     }
     else {
@@ -125,7 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             'title' => sanitize($booking['title']),
             'token' => $token,
             'csrf_token' => sanitize(generate_csrf_token()),
-            'page_title' => 'Reservierung bestätigen',
+            'page_title' => 'Anmeldung bestätigen',
         ]);
     }
     exit;
