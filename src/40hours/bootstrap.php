@@ -24,7 +24,7 @@ set_exception_handler(static function (Throwable $e): void {
     http_response_code(500);
     error_log((string)$e);
 
-    $template = __DIR__ . '/templates/internal_error.php';
+    $template = __DIR__ . '/templates/internal_server_error.html';
     if (is_file($template)) {
         require $template;
     } else {

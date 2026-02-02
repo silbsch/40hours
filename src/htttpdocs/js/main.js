@@ -1,3 +1,18 @@
+// Diese Funktion wird beim Klick auf ein <td> aufgerufen
+function handleTdClick(event) {
+  // Lese den Wert aus dem data-Attribut des geklickten <td>
+  var selectedValue = event.currentTarget.getAttribute('data-value');
+  if (selectedValue) {
+    // Hole das <select>-Element per ID
+    const selectElement = document.getElementById('fselect');
+    // Setze den Wert des Selects
+    selectElement.value = selectedValue;
+    // Optional: Triggern des change-Events, falls benötigt
+    var eventChange = new Event('change');
+    selectElement.dispatchEvent(eventChange);
+  }
+}
+
 function initFormHandler() {
   //const form = document.querySelector('form');
   this.document.querySelectorAll('form').forEach(form => {
@@ -69,3 +84,22 @@ function initFormHandler() {
     });
   });
 }
+
+window.addEventListener('DOMContentLoaded', function() {
+  // Alle <td>-Elemente, die ein data-value-Attribut besitzen, auswählen
+  document.querySelectorAll('td[data-value]').forEach(function(td) {
+    td.addEventListener('click', handleTdClick);
+  });
+
+  const checkbox = document.getElementById("fpublic");
+	if(checkbox) {
+    checkbox.addEventListener('change', function() {
+	    const textinput = document.getElementById("ftitle")
+      if(textinput) {
+        textinput.disabled = !checkbox.checked;
+      }
+});
+	}
+
+  initFormHandler();
+});

@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-require_once __DIR__ . '/bootstrap.php';
-require_once __DIR__ . '/functions/calendar.php';
-require_once __DIR__ . '/functions/database.php';
-require_once __DIR__ . '/functions/helpers.php';
-require_once __DIR__ . '/functions/layout.php';
-require_once __DIR__ . '/functions/mailer.php';
+require_once dirname(__DIR__).'/40hours/bootstrap.php';
+require_once dirname(__DIR__).'/40hours/calendar.php';
+require_once dirname(__DIR__).'/40hours/database.php';
+require_once dirname(__DIR__).'/40hours/helpers.php';
+require_once dirname(__DIR__).'/40hours/layout.php';
+require_once dirname(__DIR__).'/40hours/mailer.php';
 
 $repo = new FortyHoursRepository(Database::pdo());
 

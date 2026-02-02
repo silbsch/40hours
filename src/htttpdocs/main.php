@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
-require_once __DIR__ . '/bootstrap.php';
-require_once __DIR__ . '/functions/helpers.php';
-require_once __DIR__ . '/functions/database.php';
+require_once dirname(__DIR__).'/40hours/bootstrap.php';
+require_once dirname(__DIR__).'/40hours/helpers.php';
+require_once dirname(__DIR__).'/40hours/database.php';
 				
 	function get_combobox_html($startdate, $enddate, $events) {
 		$comboHours=new DateTime($startdate->format('Y-m-d H:i'));
@@ -117,7 +117,7 @@ require_once __DIR__ . '/functions/database.php';
 					<tr><th><label for='fortyhoursselect'>Zeit:</label></th><td><?=get_combobox_html(FORTY_HOURS_START_DATE, FORTY_HOURS_END_DATE, $events)?></td></tr>
 					<tr><th><label for='fname'>Name:</label></th><td><input type='text' id='fname' name='fortyhoursname' value='' autocomplete='name' minlength='3' maxlength='55' required placeholder= 'Bitte gib Deinen Namen an'/></td></tr>
 					<tr><th><label for='femail'>E-Mail:</label></th><td><input type='email' id='femail' name='fortyhoursemail' value='' autocomplete="email" minlength='6' maxlength='70' required placeholder= 'Bitte gib Deine E-Mail-Adresse an' /></td></tr>
-					<tr><th><label for='fpublic'>Gemeinsam:</label></th><td><label><input type='checkbox' id='fpublic' name='fortyhourspublic' onclick="togglePublic()"/><small>  Setze den Haken, wenn jeder zu dieser Gebetszeit dazu kommen darf. Ohne Haken bleibt die Reservierung nur für Dich.</small></label></td></tr>
+					<tr><th><label for='fpublic'>Gemeinsam:</label></th><td><label><input type='checkbox' id='fpublic' name='fortyhourspublic'/><small>  Setze den Haken, wenn jeder zu dieser Gebetszeit dazu kommen darf. Ohne Haken bleibt die Reservierung nur für Dich.</small></label></td></tr>
 					<tr><th><label for='ftitle'>Titel:</label></th><td><input type='text' id='ftitle' name='fortyhourstitle' minlength='3' maxlength='55' autocomplete='off' required disabled placeholder= 'Bitte gib einen Titel an.' /></td></tr>
 					<tr><th><label for='fdatenschutz'>Datenschutz:</label></th><td><label><input type='checkbox' id='fdatenschutz' name='fortyhoursdatenschutz' required/><small>  Mit der Nutzung dieses Formulars erkläre ich mich mit der Speicherung und Verarbeitung meiner Daten durch diese Website einverstanden.</small></label></td></tr>
 					<tr><td></td><td>

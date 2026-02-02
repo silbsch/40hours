@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title><?= $tpl_page_title ?></title>
-        <link rel="stylesheet" href="40hours.css">
+        <link rel="stylesheet" href="./style/40hours.css">
         <script language="javascript" type="text/javascript" src="main.js">
 			
 

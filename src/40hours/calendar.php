@@ -61,7 +61,7 @@ function build_ics_event(array $e, IcsStatus $status): string {
     // erwartet Keys:
     // uid, start (DateTimeInterface), end (DateTimeInterface),
     // summary, description, attendee_email, attendee_name
-e
+
     $method = match ($status) {
         IcsStatus::REQUEST, IcsStatus::CONFIRMED => 'REQUEST',
         IcsStatus::CANCEL => 'CANCEL',

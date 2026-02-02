@@ -28,10 +28,11 @@ function render(string $template, bool $is_external, int $status = 200, array $d
         header('Content-Type: text/html; charset=UTF-8');
     }
 
-	require __DIR__ . '/../templates/' . $template . '.php';
+    $template_path = dirname(__DIR__).'/40hours/templates/';
+	require $template_path . $template . '.php';
 	$content = ob_get_clean();
 	$base_link = $is_external ? get_base_link() : get_application_base_link();
-    require __DIR__ . '/../templates/template_'.($is_external ? 'external' : 'internal').'.php';
+    require $template_path.'template_'.($is_external ? 'external' : 'internal').'.php';
 }
 
 function render_invalid_link()
