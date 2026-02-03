@@ -14,17 +14,20 @@
   --booked-bg: #ccedc8ff;
   --default-distance: .3em;
   --large-distance: .5em;
-  --fontsize-large: 24px;
-  --fontsize-xlarge: 38px;
+  --fontsize-large: 1.7rem;
+  --fontsize-xlarge: 2.5rem;
   --fontweight-bold: 600;
   --fontweight-light: 300;
 }
+html {
+  font-size: 16px;
+}
 
 body {
-    font-family: inter, system-ui, -apple-system, Arial, Segoe UI, Roboto, sans-serif;
-    margin: 0;
-    background: var(--main-bg);
-    color: var(--main-fg);
+  font-family: inter, system-ui, -apple-system, Arial, Segoe UI, Roboto, sans-serif;
+  margin: 0;
+  background: var(--main-bg);
+  color: var(--main-fg);
 }
 
 table {
@@ -68,17 +71,17 @@ button:hover:not(:disabled) {
 /* Nur im Busy-Zustand sichtbar */
 button:disabled .btn-spinner,
 button[aria-busy=true] .btn-spinner {
-    display: inline-block;
+  display: inline-block;
 }
 
 button:disabled .btn-busy,
 button[aria-busy=true] .btn-busy {
-    display: inline-block;
+  display: inline-block;
 }
 
 button:disabled .btn-text,
 button[aria-busy=true] .btn-text {
-    display: none;
+  display: none;
 }
 
 select, input[type=submit], input[type=text], input[type=email] {
@@ -257,19 +260,23 @@ td.fortyhours-outside {
 .fortyhours-info {
 	margin-bottom: var(--large-distance);
 }
+
 .fortyhours-info > * {
 	margin-bottom: var(--default-distance);
+	line-height: 1.4;
 }
+
 .fortyhours-info > *:last-child {
 	margin-bottom: 0px;
 }
-           
+
 .box {
 	background: var(--disabled-bg);
 	border-radius: 0px;
 	padding: 14px 16px;
 	margin-bottom: var(--large-distance);
 }
+
 .row {
 	display: grid;
 	grid-template-columns: 105px 1fr;
@@ -277,6 +284,7 @@ td.fortyhours-outside {
 	padding: 8px 0;
 	border-bottom: 1px solid var(--border);
 }
+
 .row:last-child {
 	border-bottom: 0;
 }
@@ -295,23 +303,25 @@ label small {
 }
 
 .label {
-  font-weight: var(--fontweight-bold);
+	font-weight: var(--fontweight-bold);
 }
 
 .value {
 	color: var(--active-fg);
 	font-weight: var(--fontweight-bold);
-  white-space: normal; /* Erlaubt Umbruch bei Leerzeichen */
-  word-wrap: break-word; /* Erzwingt Umbruch bei langen Wörtern ohne Leerzeichen */
-  overflow-wrap: break-word; /* Modernere Alternative zu word-wrap */
-  hyphens: auto; /* (Optional) Fügt Silbentrennung ein, wenn möglich */
+	white-space: normal; /* Erlaubt Umbruch bei Leerzeichen */
+	word-wrap: break-word; /* Erzwingt Umbruch bei langen Wörtern ohne Leerzeichen */
+	overflow-wrap: break-word; /* Modernere Alternative zu word-wrap */
+	hyphens: auto; /* (Optional) Fügt Silbentrennung ein, wenn möglich */
 }
+
 .fortyhours-actions {
 	margin-top: 16px;
 	display: flex;
 	gap: 10px;
 	flex-wrap: wrap;
 }
+
 .fortyhours-footer {
 	margin-top: 16px;
 	font-size: 13px;
@@ -321,22 +331,26 @@ label small {
 .fortyhours-name {
 	font-family: scriptina, Georgia, serif;
 	font-size: var(--fontsize-xlarge);
+	display: inline-block;
+	line-height: 1;
+	vertical-align: baseline;
+	margin-bottom:-0.1em;
 }
 
 /* Spinner */
 .btn-spinner {
-    width: 1em;
-    height: 1em;
-    border: 2px solid var(--disabled-fg);
-    border-top-color: var(--disabled-bg);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-    display: none;
+  width: 1em;
+  height: 1em;
+  border: 2px solid var(--disabled-fg);
+  border-top-color: var(--disabled-bg);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  display: none;
 }
 
 .btn-busy {
-    color: var(--disabled-fg);
-    display: none;
+  color: var(--disabled-fg);
+  display: none;
 }
 
 @font-face {
@@ -351,8 +365,7 @@ label small {
 
 /* Animation */
 @keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
+  to {
+    transform: rotate(360deg);
+  }
 }
-

@@ -1,6 +1,6 @@
 <div class='fortyhours-info'>
-    <div><span class='fortyhours-name'><?= $tpl_name ?></span>, Du möchtest Deine Reservierung für das <b><span class='label'><?= FORTY_HOURS_NAME ?></span></b> im Haus der <span><?= FORTY_HOURS_ORGANIZER ?></span> am <b><?= $tpl_startDate ?></b> von <b><?= $tpl_startTime ?></b> bis <b><?= $tpl_endTime ?></b> stornieren?</div>
-    <div>Das ist schade - aber danke, dass Du uns kurz Bescheid gibst.</div>          
+    <div><div class='fortyhours-name'><?= $tpl_name ?>,</div> Du möchtest Deine Reservierung für das <b><span class='label'><?= FORTY_HOURS_NAME ?></span></b> im Haus der <span><?= FORTY_HOURS_ORGANIZER ?></span> am <b><?= $tpl_startDate ?></b> von <b><?= $tpl_startTime ?></b> bis <b><?= $tpl_endTime ?></b> stornieren?</div>
+    <div>Das ist schade - aber danke, dass Du uns kurz Bescheid gibst.</div>
 </div>
 <form method="post">
     <input type="hidden" name="type" value="u">
