@@ -130,11 +130,7 @@ function is_null_or_empty(string $value): bool
  */
 function post_string(string $key, bool $trim = true): ?string
 {
-    $val = $_POST[$key] ?? null;
-    if (!is_string($val)) {
-        return null;
-    }
-    return $trim ? trim($val) : $val;
+    return get_string_from_array($_POST, $key, $trim);
 }
 
 /**
@@ -142,14 +138,21 @@ function post_string(string $key, bool $trim = true): ?string
  */
 function get_string(string $key, bool $trim = true): ?string
 {
-    $val = $_GET[$key] ?? null;
+    return get_string_from_array($_GET, $key, $trim);
+}
+
+/**
+ * Liest einen String aus $_GET (optional trim) – null wenn nicht vorhanden/kein string.
+ */
+function get_string_from_array(array $array, string $key, bool $trim = true): ?string
+{
+    $val = $array[$key] ?? null;
 
     if (!is_string($val)) {
         return null;
     }
     return $trim ? trim($val) : $val;
 }
-
 function get_name_of_the_day($date): string 
 {
     $year = (int)$date->format('Y');
