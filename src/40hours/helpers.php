@@ -162,8 +162,8 @@ function preventAutoLinksInvisible(string $text): string {
     return $text;
 }
 
-function generate_link_params(string $token, string $type='-'): string {
-    $data = trim($type) . ':' .trim($token);
+function generate_link_params(array $array): string {
+    $data = base64_encode(serialize($array));
     $signature = hash_hmac('sha256', $data, CSRF_KEY);
     $token = base64_encode($data . ':' . $signature);
     return $token;
@@ -175,14 +175,13 @@ function validate_link_params(string $token): ?array {
     }
 
     $token = base64_decode($token);
-    [$type, $token, $signature] = explode(':', $token, 3);
-
-    $data = $type . ':' . $token;
+    [$data, $signature] = explode(':', $token, 2);
     $expected = hash_hmac('sha256', $data, CSRF_KEY);
 
     if (!hash_equals($expected, $signature)) {
-        return null;
+            return null;
     }
-    return ['type' => $type, 'token' => $token];
+
+    return unserialize(base64_decode($data));
 }
 ?>

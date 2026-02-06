@@ -7,17 +7,29 @@ require_once dirname(__DIR__).'/40hours/database.php';
 require_once dirname(__DIR__).'/40hours/helpers.php';
 require_once dirname(__DIR__).'/40hours/layout.php';
 require_once dirname(__DIR__).'/40hours/mailer.php';
+require_once dirname(__DIR__).'/40hours/FortyHoursRepository.php';
+
+
 
 /* =========================================================
  * POST → Buchung bestätigen
  * ========================================================= */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $token = post_string('token') ?? '';
-    $csrf  = post_string('csrf_token') ?? '';
+    $token = post_string('csrf_token') ?? '';
+    $token_values = validate_link_params($token);
 
-    if ($token === '' || !validate_csrf_token($csrf)) {
+    if ($token_values === null) {
         render_invalid_link();
+        exit;
+    }
+
+    $token = sanitize($token_values['token']);
+    $method = sanitize($token_values['method']);
+    $action = sanitize($token_values['action']);
+
+    if (is_null_or_empty($token) || $method !== 'post' || $action !== 'confirm') {
+        render_missing_link();
         exit;
     }
 
@@ -32,12 +44,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($booking === null) {
         render_not_found();
+        exit;
     } 
+
+    $start = new DateTimeImmutable((string)$booking['start']);
+    $end   = new DateTimeImmutable((string)$booking['end']);
+    $name = sanitize($booking['name']);
+
+    if($booking['updated'] === false) {
+        render("team/confirmed_team", true, 200, [
+            'name'  => $name,
+            'start' => sanitize($start->format('d.m.Y H:i')),
+            'end'   => sanitize($end->format('d.m.Y H:i')),
+            'completion' => sanitize((new DateTimeImmutable((string)$booking['completion_on']))->format('d.m.Y H:i')),
+            'page_title' => 'Anmeldung bestätigt',
+        ]);
+    }
     else {
         /* ---------- Success ---------- */
-        $start = new DateTimeImmutable((string)$booking['start']);
-        $end   = new DateTimeImmutable((string)$booking['end']);
-        $name = sanitize($booking['name']);
         $mail = sanitize($booking['email']);
         $reservationToken = sanitize($booking['reservation_token']);
 
@@ -77,17 +101,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
  * GET → Bestätigungsseite anzeigen
  * ========================================================= */
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-
     $token = get_string('s');
-    $token_values= validate_link_params($token);
+    $token_values = validate_link_params($token);
 
     if ($token_values === null) {
         render_invalid_link();
         exit;
     }
-
+    
     $token = sanitize($token_values['token']);
-    if (is_null_or_empty($token)) {
+    $method = sanitize($token_values['method']);
+    $action = sanitize($token_values['action']);
+
+    if (is_null_or_empty($token) || $method !== 'get' || $action !== 'confirm') {
         render_missing_link();
         exit;
     }
@@ -106,6 +132,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         exit;
     }
 
+    $csrf_token = generate_link_params(['token' => $booking['reservation_token'], 'method' => 'post', 'action' => 'confirm']);
+    
     /* ---------- Bestätigungsformular ---------- */
     $start = new DateTimeImmutable((string)$booking['start']);
     $end   = new DateTimeImmutable((string)$booking['end']);
@@ -128,8 +156,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             'end'   => sanitize($end->format('d.m.Y H:i')),
             'public'=> $booking['public'] === 1 ? 'Ja' : 'Nein',
             'title' => sanitize($booking['title']),
-            'token' => $token,
-            'csrf_token' => sanitize(generate_csrf_token()),
+            'csrf_token' => $csrf_token,
             'page_title' => 'Anmeldung bestätigen',
         ]);
     }

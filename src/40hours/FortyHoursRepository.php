@@ -2,7 +2,6 @@
 declare(strict_types=1);
 
 require_once dirname(__DIR__).'/40hours/database.php';
-namespace 40hours;
 
 final class FortyHoursRepository
 {
@@ -148,8 +147,8 @@ final class FortyHoursRepository
             $stmt = $this->pdo->prepare('SELECT * FROM `40hours` WHERE reservation_token = :token LIMIT 1 FOR UPDATE');
             $stmt->execute(['token' => $token]);
 
-            $row = $stmt->fetch();        
-            if ($row === null) {
+            $row = $stmt->fetch();
+            if ($row === null || $row === false) {
                 // keine Reservierung gefunden;
                 $this->pdo->rollBack();
                 return null;

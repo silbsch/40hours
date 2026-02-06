@@ -11,6 +11,7 @@ require_once dirname(__DIR__).'/40hours/layout.php';
 require_once dirname(__DIR__).'/40hours/FortyHoursBookingDto.php';
 require_once dirname(__DIR__).'/40hours/FortyHoursBookingController.php';
 require_once dirname(__DIR__).'/40hours/FortyHoursMailer.php';
+require_once dirname(__DIR__).'/40hours/FortyHoursRepository.php';
 
 ensure_session_started();
 

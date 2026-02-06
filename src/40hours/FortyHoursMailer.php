@@ -17,7 +17,7 @@ final class FortyHoursBookingMailer
 
     public function sendBookingUserMail(FortyHoursBookingDto $booking): bool
     {
-        $token = rawurlencode(generate_link_params($booking->reservationToken, 'u'));
+        $token = rawurlencode(generate_link_params(['token' => $booking->reservationToken, 'method' => 'get', 'action' => 'cancel', 'scope' => 'user']));
 
         // --- Mail user ---
         $userCancelLink = FORTY_HOURS_APPLICATION_HOST . '/cancel.php?s=' . $token;
@@ -47,11 +47,12 @@ final class FortyHoursBookingMailer
 
     public function sendBookingTeamMail(FortyHoursBookingDto $booking): bool
     {
-        $token = rawurlencode(generate_link_params($booking->reservationToken, 't'));
+        $cancel_token  = rawurlencode(generate_link_params(['token' => $booking->reservationToken, 'method' => 'get', 'action' => 'cancel', 'scope' => 'team']));
+        $confirm_token = rawurlencode(generate_link_params(['token' => $booking->reservationToken, 'method' => 'get', 'action' => 'confirm']));
 
         // --- Mail team ---
-        $teamCancelLink = FORTY_HOURS_APPLICATION_HOST . '/cancel.php?s=' . $token;
-        $teamCompleteLink = FORTY_HOURS_APPLICATION_HOST . '/confirm.php?s=' . $token;
+        $teamCancelLink = FORTY_HOURS_APPLICATION_HOST . '/cancel.php?s=' . $cancel_token;
+        $teamCompleteLink = FORTY_HOURS_APPLICATION_HOST . '/confirm.php?s=' . $confirm_token;
 
         $teamBody  = 'Anmeldung für das '.FORTY_HOURS_NAME.'<br/><br/>';
         $teamBody .= 'Name: <b>' . preventAutoLinksInvisible($booking->name) . '</b><br/>';
