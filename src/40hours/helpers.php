@@ -18,21 +18,6 @@ function ensure_session_started(): void
 }
 
 /**
- * RFC 4122 UUID v4 Generator (cryptographically secure).
- */
-function generate_uuid_v4(): string
-{
-    $data = random_bytes(16);
-
-    // Version 4
-    $data[6] = chr((ord($data[6]) & 0x0f) | 0x40);
-    // Variant RFC 4122
-    $data[8] = chr((ord($data[8]) & 0x3f) | 0x80);
-
-    return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
-}
-
-/**
  * HTML-Escaping für sichere Ausgabe in HTML (Text-Kontext).
  * Nicht für Attribute/JS/URLs missbrauchen -> dort kontextgerecht escapen.
  */
@@ -45,16 +30,14 @@ function sanitize(string $value, bool $trim = true): string
 /**
  * Einfache E-Mail-Validierung.
  */
-function is_valid_email(string $email): bool
-{
+function is_valid_email(string $email): bool {
     return filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
 }
 
 /**
  * Erstellt (oder liefert) ein CSRF-Token pro Session.
  */
-function generate_csrf_token(): string
-{
+function generate_csrf_token(): string {
     $timestamp = time();
     $data = $timestamp . ':' . bin2hex(random_bytes(16));
     $signature = hash_hmac('sha256', $data, CSRF_KEY);
@@ -62,8 +45,7 @@ function generate_csrf_token(): string
     return $token;
 }
 
-function generate_csrf_token_session(): string
-{
+function generate_csrf_token_session(): string {
     ensure_session_started();
 
     if (empty($_SESSION['csrf_token']) || !is_string($_SESSION['csrf_token'])) {
@@ -76,8 +58,7 @@ function generate_csrf_token_session(): string
  * Prüft CSRF-Token sicher (timing-safe).
  * Optional: Token nach erfolgreicher Prüfung rotieren.
  */
-function validate_csrf_token(string $token): bool
-{
+function validate_csrf_token(string $token): bool {
     if (!is_string($token) || $token === '') {
         return false;
     }
@@ -120,29 +101,29 @@ function validate_csrf_token_session(string $token, bool $rotateOnSuccess = true
     return $ok;
 }
 
-function is_null_or_empty(string $value): bool
-{
-    return $value === null || trim($value) === '';
+function is_null_or_empty(string $value): bool {
+    return $value === null || !is_string($value) || trim($value) === '';
 }
 
 /**
  * Liest einen String aus $_POST (optional trim) – null wenn nicht vorhanden/kein string.
  */
-function post_string(string $key, bool $trim = true): ?string
-{
-    $val = $_POST[$key] ?? null;
-    if (!is_string($val)) {
-        return null;
-    }
-    return $trim ? trim($val) : $val;
+function post_string(string $key, bool $trim = true): ?string {
+    return get_string_from_array($_POST, $key, $trim);
 }
 
 /**
  * Liest einen String aus $_GET (optional trim) – null wenn nicht vorhanden/kein string.
  */
-function get_string(string $key, bool $trim = true): ?string
-{
-    $val = $_GET[$key] ?? null;
+function get_string(string $key, bool $trim = true): ?string {
+    return get_string_from_array($_GET, $key, $trim);
+}
+
+/**
+ * Liest einen String aus $_GET (optional trim) – null wenn nicht vorhanden/kein string.
+ */
+function get_string_from_array(array $array, string $key, bool $trim = true): ?string {
+    $val = $array[$key] ?? null;
 
     if (!is_string($val)) {
         return null;
@@ -150,8 +131,7 @@ function get_string(string $key, bool $trim = true): ?string
     return $trim ? trim($val) : $val;
 }
 
-function get_name_of_the_day($date): string 
-{
+function get_name_of_the_day($date): string {
     $year = (int)$date->format('Y');
     $easter = new DateTime(date('Y-m-d',easter_date($year)));
     $x = new DateTime($easter->format('Y-m-d'));
@@ -173,8 +153,7 @@ function get_application_base_link() {
         return "<a href='".FORTY_HOURS_APPLICATION_BASE_URL."'>zurück zur Übersichtsseite</a>";
 }
 
-function preventAutoLinksInvisible(string $text): string
-{
+function preventAutoLinksInvisible(string $text): string {
     $zwsp = "\u{200B}"; // zero width space
     $text = sanitize($text);
     $text = str_replace('://', ":$zwsp//$zwsp", $text);
@@ -183,4 +162,26 @@ function preventAutoLinksInvisible(string $text): string
     return $text;
 }
 
+function generate_link_params(array $array): string {
+    $data = base64_encode(serialize($array));
+    $signature = hash_hmac('sha256', $data, CSRF_KEY);
+    $token = base64_encode($data . ':' . $signature);
+    return $token;
+}
+
+function validate_link_params(string $token): ?array {
+    if (is_null_or_empty($token)) {
+        return null;
+    }
+
+    $token = base64_decode($token);
+    [$data, $signature] = explode(':', $token, 2);
+    $expected = hash_hmac('sha256', $data, CSRF_KEY);
+
+    if (!hash_equals($expected, $signature)) {
+            return null;
+    }
+
+    return unserialize(base64_decode($data));
+}
 ?>

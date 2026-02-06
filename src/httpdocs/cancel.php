@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_scopes=1);
 
 require_once dirname(__DIR__).'/40hours/bootstrap.php';
 require_once dirname(__DIR__).'/40hours/calendar.php';
@@ -7,24 +7,34 @@ require_once dirname(__DIR__).'/40hours/database.php';
 require_once dirname(__DIR__).'/40hours/helpers.php';
 require_once dirname(__DIR__).'/40hours/layout.php';
 require_once dirname(__DIR__).'/40hours/mailer.php';
+require_once dirname(__DIR__).'/40hours/FortyHoursRepository.php';
 
-$repo = new FortyHoursRepository(Database::pdo());
 
 /* =========================================================
  * POST → Buchung löschen
  * ========================================================= */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $type = post_string('type') ?? '';
-    $token = post_string('token') ?? '';
-    $csrf  = post_string('csrf_token') ?? '';
+    $token = post_string('csrf_token') ?? '';
+    $token_values = validate_link_params($token);
 
-    if ($token === '' || !validate_csrf_token($csrf)) {
+    if ($token_values === null) {
         render_invalid_link();
         exit;
     }
 
+    $token = sanitize($token_values['token']);
+    $scope = sanitize($token_values['scope']);
+    $method = sanitize($token_values['method']);
+    $action = sanitize($token_values['action']);
+
+    if (is_null_or_empty($token) || $method !== 'post' || $action !== 'cancel' || ($scope !== 'user' && $scope !== 'team')) {
+        render_missing_link();
+        exit;
+    }
+
     try {
+        $repo = new FortyHoursRepository(Database::pdo());
         $booking = $repo->deleteByToken($token);
     } catch (Throwable $e) {
         error_log('40hours_cancel DB error: ' . $e->getMessage());
@@ -43,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $mail = sanitize($booking['email']);
         $reservationToken = sanitize($booking['reservation_token']);
 
-        if($type === 'u') {
+        if($scope === 'user') {
             render("user/cancelled_user", true, 200, [
                 'name'  => $name,
                 'startDate' => sanitize($start->format('d.m.Y')),
@@ -92,16 +102,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
  * ========================================================= */
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $token = get_string('s');
-    $type = get_string('t');
+    $token_values = validate_link_params($token);
 
-    if (is_null_or_empty($token) || ($type !== 'u' && $type !== 't')) {
+    if ($token_values === null) {
+        render_invalid_link();
+        exit;
+    }
+    
+    $token = sanitize($token_values['token']);
+    $scope = sanitize($token_values['scope']);
+    $method = sanitize($token_values['method']);
+    $action = sanitize($token_values['action']);
+
+    if (is_null_or_empty($token) || $method !== 'get' || $action !== 'cancel' || ($scope !== 'user' && $scope !== 'team')) {
         render_missing_link();
         exit;
     }
-
-    $token = sanitize($token);
-
+    
     try {
+        $repo = new FortyHoursRepository(Database::pdo());
         $booking = $repo->findByToken($token);
     } catch (Throwable $e) {
         error_log('40hours_cancel DB error: ' . $e->getMessage());
@@ -114,17 +133,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         exit;
     }
 
+    $csrf_token = generate_link_params(['token' => $booking['reservation_token'], 'method' => 'post', 'action' => 'cancel', 'scope' => $token_values['scope']]);
     /* ---------- Bestätigungsformular ---------- */
     $start = new DateTimeImmutable((string)$booking['start']);
     $end   = new DateTimeImmutable((string)$booking['end']);
-    if($type === 'u') {
+    if($scope === 'user') {
        render("user/cancellation_form_user", true, 200, [
                 'name'  => sanitize($booking['name']),
                 'startDate' => sanitize($start->format('d.m.Y')),
                 'startTime' => sanitize($start->format('H:i')),
                 'endTime'   => sanitize($end->format('H:i')),
-                'token' => $token,
-                'csrf_token' => sanitize(generate_csrf_token()),
+                'csrf_token' => $csrf_token,
                 'page_title' => 'Reservierung stornieren',
             ]);
     }
@@ -135,8 +154,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 'end'   => sanitize($end->format('d.m.Y H:i')),
                 'public'=> $booking['public'] === 1 ? 'Ja' : 'Nein',
                 'title' => sanitize($booking['title']),
-                'token' => $token,
-                'csrf_token' => sanitize(generate_csrf_token()),
+                'csrf_token' => $csrf_token,
                 'page_title' => 'Reservierung stornieren',
             ]);
     }

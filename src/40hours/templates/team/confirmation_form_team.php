@@ -8,7 +8,6 @@
     <div class='row'><div class='label'>Titel</div><div class='value'><?= $tpl_title ?></div></div>
 </div>
 <form method="post">
-    <input type="hidden" name="token" value="<?= $tpl_token ?>">
     <input type="hidden" name="csrf_token" value="<?= $tpl_csrf_token ?>">
     <div class="actions">
         <button type="submit" aria-busy="false" id="submitButton">
