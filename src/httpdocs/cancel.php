@@ -92,15 +92,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
  * ========================================================= */
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $token = get_string('s');
-    $type = get_string('t');
+    $token_values= validate_link_params($token);
+
+    if ($token_values === null) {
+        render_invalid_link();
+        exit;
+    }
+    
+    $token = sanitize($token_values['token']);
+    $type = sanitize($token_values['type']);
 
     if (is_null_or_empty($token) || ($type !== 'u' && $type !== 't')) {
         render_missing_link();
         exit;
     }
-
-    $token = sanitize($token);
-
+    
     try {
         $booking = $repo->findByToken($token);
     } catch (Throwable $e) {

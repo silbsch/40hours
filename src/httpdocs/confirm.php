@@ -79,14 +79,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     $token = get_string('s');
+    $token_values= validate_link_params($token);
 
+    if ($token_values === null) {
+        render_invalid_link();
+        exit;
+    }
+
+    $token = sanitize($token_values['token']);
     if (is_null_or_empty($token)) {
         render_missing_link();
         exit;
     }
-
-    $token = sanitize($token);
-
+    
     try {
         $repo = new FortyHoursRepository(Database::pdo());
         $booking = $repo->findByToken($token);
