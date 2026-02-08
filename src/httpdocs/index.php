@@ -8,6 +8,7 @@ require dirname(__DIR__).'/40hours/bootstrap.php';
   <meta charset="utf-8" />
   <link rel="stylesheet" href="style/40hours.css">
 	<script language="javascript" type="text/javascript" src="main.js"></script>
+	<script language="javascript" type="text/javascript" src="iframe.js"></script>
 </head>
 
 <body>

@@ -14,13 +14,18 @@
   --booked-bg: #ccedc8ff;
   --default-distance: .3em;
   --large-distance: .5em;
+  --fontsize-normal: 100%;
+  --fontsize-small: 0.8rem;
   --fontsize-large: 1.7rem;
   --fontsize-xlarge: 2.5rem;
+  --fontsize-xxlarge: 3.5rem;
+  --fontweight-normal: 400;
   --fontweight-bold: 600;
   --fontweight-light: 300;
 }
 html {
-  font-size: 16px;
+  font-size: var(--fontsize-normal);
+  font-weight: var(--fontweight-normal);
 }
 
 body {
@@ -175,6 +180,7 @@ select, option {
   border: 1px solid var(--border);
   width: 100%;
   table-layout: fixed;
+  margin: 0 1px; /* top and bottom | left and right */
 }
 
 .main-container-left th, .main-container-left td {
@@ -224,6 +230,7 @@ td.fortyhours-outside {
 .fortyhours-public {
   background: var(--booked-bg);
   color: var(--booked-fg);
+  line-height: 0.93;
 }
 
 .fortyhours-container {
@@ -305,7 +312,12 @@ label small {
 .label {
 	font-weight: var(--fontweight-bold);
 }
-
+.large {
+  font-size: var(--fontsize-xxlarge);
+}
+.small {
+  font-size: var(--fontsize-small);
+}
 .value {
 	color: var(--active-fg);
 	font-weight: var(--fontweight-bold);

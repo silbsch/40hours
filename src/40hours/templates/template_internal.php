@@ -4,6 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="./style/40hours.css">
+        <script language="javascript" type="text/javascript" src="iframe.js"></script>
     </head>
     <body>
         <div class="fortyhours-container">

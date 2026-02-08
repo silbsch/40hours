@@ -136,7 +136,7 @@ function get_name_of_the_day($date): string {
     $easter = new DateTime(date('Y-m-d',easter_date($year)));
     $x = new DateTime($easter->format('Y-m-d'));
     
-    if($x->modify('-2 day') == $date) return "Gründonnerstag, ";
+    if($x->modify('-3 day') == $date) return "Gründonnerstag, ";
     if($x->modify('+1 day') == $date) return "Karfreitag, ";
     if($x->modify('+1 day') == $date) return "Karsamstag, ";
     if($x->modify('+1 day') == $date) return "Ostersonntag, ";
