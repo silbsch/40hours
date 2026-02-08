@@ -83,8 +83,7 @@ function validate_csrf_token(string $token): bool {
  * Prüft CSRF-Token sicher (timing-safe).
  * Optional: Token nach erfolgreicher Prüfung rotieren.
  */
-function validate_csrf_token_session(string $token, bool $rotateOnSuccess = true): bool
-{
+function validate_csrf_token_session(string $token, bool $rotateOnSuccess = true): bool {
     ensure_session_started();
 
     $stored = $_SESSION['csrf_token'] ?? '';
