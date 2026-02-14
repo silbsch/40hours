@@ -1,10 +1,1 @@
-function sendHeight() {
-  //const height = document.documentElement.scrollHeight;
-  const height = document.documentElement.offsetHeight;
-  window.parent.postMessage({ type: 'iframeHeight', height: height },'*');
-}
-
-window.addEventListener('load', sendHeight);
-
-// bei Resize (z.B. responsive, Fonts, Bilder)
-window.addEventListener('resize', sendHeight);
+const _0xe58219=_0xeafd;(function(_0x5b1ed6,_0x352b43){const _0x58c5b5=_0xeafd,_0x251096=_0x5b1ed6();while(!![]){try{const _0x321065=-parseInt(_0x58c5b5(0x13c))/0x1+parseInt(_0x58c5b5(0x13f))/0x2+-parseInt(_0x58c5b5(0x13d))/0x3*(-parseInt(_0x58c5b5(0x146))/0x4)+-parseInt(_0x58c5b5(0x149))/0x5*(-parseInt(_0x58c5b5(0x14c))/0x6)+parseInt(_0x58c5b5(0x145))/0x7*(parseInt(_0x58c5b5(0x13e))/0x8)+parseInt(_0x58c5b5(0x144))/0x9*(parseInt(_0x58c5b5(0x141))/0xa)+-parseInt(_0x58c5b5(0x148))/0xb;if(_0x321065===_0x352b43)break;else _0x251096['push'](_0x251096['shift']());}catch(_0x5d7b2f){_0x251096['push'](_0x251096['shift']());}}}(_0x2fbc,0xd05ff));function i(){const _0x13d7f0=_0xeafd,_0x3d97fb=document[_0x13d7f0(0x140)][_0x13d7f0(0x143)];window[_0x13d7f0(0x14b)]['postMessage']({'type':_0x13d7f0(0x14d),'height':_0x3d97fb},'*');}window['addEventListener'](_0xe58219(0x147),i),window[_0xe58219(0x14a)](_0xe58219(0x142),i);function _0xeafd(_0x48d290,_0x223c37){_0x48d290=_0x48d290-0x13c;const _0x2fbcf4=_0x2fbc();let _0xeafd2a=_0x2fbcf4[_0x48d290];return _0xeafd2a;}function _0x2fbc(){const _0x535b77=['parent','36hjHewx','iframeHeight','1556512OJRqsC','123960CHjfBc','80sgnDKc','3104710wzIezr','documentElement','40vAoNOC','resize','offsetHeight','3090861AYPIFS','136570oKqFPn','92VpfYYH','load','31878682RpwXbE','1030455gaWxhr','addEventListener'];_0x2fbc=function(){return _0x535b77;};return _0x2fbc();}

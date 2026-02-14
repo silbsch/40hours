@@ -202,6 +202,11 @@ select, option {
   width: calc((100% - 130px) / 3);
 }
 
+.main-container-left td[aria-current=true] {
+  background: var(--hover-bg);
+  color: var(--hover-fg); 
+} 
+
 .fortyhours-free {
   color: var(--active-fg);
   background: var(--active-bg);

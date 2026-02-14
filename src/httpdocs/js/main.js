@@ -98,8 +98,21 @@ window.addEventListener('DOMContentLoaded', function() {
       if(textinput) {
         textinput.disabled = !checkbox.checked;
       }
-});
+    });
 	}
+  const selectbox = document.getElementById("fselect");
+	if(selectbox) {
+    selectbox.addEventListener('change', function() {
+      document.querySelectorAll('td[aria-current="true"]').forEach(td => td.setAttribute('aria-current', 'false'));
 
+      const value = this.options[this.selectedIndex].getAttribute("value");
+      if(value) {
+        const td = document.querySelector('td[data-value="' + value + '"]');
+        if(td) {
+          td.setAttribute('aria-current', 'true');
+        }
+      }
+    });
+	}
   initFormHandler();
 });
