@@ -93,7 +93,7 @@ function build_ics_event(array $e, IcsStatus $status): string {
         'SEQUENCE:' . (int)$sequence,
         'SUMMARY:' . ics_escape_text($e['summary'] ?? ''),
         'DESCRIPTION:' . ics_escape_text($e['description'] ?? ''),
-        'LOCATION:'.FORTY_HOURS_LOCATION,
+        'LOCATION:'.FORTY_HOURS_ORGANIZER.', '.FORTY_HOURS_LOCATION,
         'ORGANIZER;CN='.FORTY_HOURS_ORGANIZER.':mailto:'.FORTY_HOURS_TEAM_EMAIL,
         // ATTENDEE ist hilfreich, damit REQUEST/CANCEL sauber zuordenbar ist:
         'ATTENDEE;CN=' . ics_escape_param($e['attendee_name'] ?? '') .';ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:' . $e['attendee_email'],
