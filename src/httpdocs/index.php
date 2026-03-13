@@ -6,6 +6,7 @@ require dirname(__DIR__).'/40hours/bootstrap.php';
 <head>
   <title><?= FORTY_HOURS_NAME ?> bei <?= FORTY_HOURS_ORGANIZER ?></title>
   <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style/40hours.css">
 	<script language="javascript" type="text/javascript" src="main.js"></script>
 	<script language="javascript" type="text/javascript" src="iframe.js"></script>

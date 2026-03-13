@@ -153,6 +153,11 @@ select, option {
   line-height: 3em;
 }
 
+.intro-container {
+	width: 100%;
+	max-width: 100vw;
+}
+
 .main-container {
   display: flex;
   flex-wrap: wrap;
@@ -166,11 +171,6 @@ select, option {
   justify-content: center;
 }
 
-.main-container-left {
-  min-width: 725px;
-  max-width: 1000px;
-}
-
 .main-container-right {
   min-width: 300px;
   max-width: 500px;
@@ -178,7 +178,7 @@ select, option {
 
 .main-container-left table {
   border: 1px solid var(--border);
-  width: 100%;
+  width: max(calc(100% - 2px), 570px);
   table-layout: fixed;
   margin: 0 1px; /* top and bottom | left and right */
 }
@@ -199,7 +199,7 @@ select, option {
 }
 .main-container-left th:not(:first-child),
 .main-container-left td:not(:first-child) {
-  width: calc((100% - 130px) / 3);
+  width: calc((100% - 132px) / 3);
 }
 
 .main-container-left td[aria-current=true] {
@@ -224,7 +224,7 @@ select, option {
 }
 
 td.fortyhours-outside {
-  border: 1px dotted var(--border);
+  border: none;
 }
 
 .fortyhours-booked {
@@ -384,5 +384,53 @@ label small {
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+@media only screen and (width <= 800px) {
+  body {
+    padding: 0;
+    font-size: var(--fontsize-normal);
+  }
+
+  .main-container-left,
+  .main-container-right {
+    display: block;
+    max-width: 100%;
+    width: 100%;
+  }
+
+
+  .main-container-left th:first-child,
+  .main-container-left td:first-child {
+    width: 40px;
+    line-height: 0.92;
+    padding: .5rem;
+    font-size: var(--fontsize-small);
+	  font-weight: var(--fontweight-light);
+  }
+
+  .main-container-left th:not(:first-child),
+  .main-container-left td:not(:first-child) {
+    width: calc((min(100%,570px) - 42px) / 3);
+  }
+
+  .main-container-right {
+    margin-top: 1rem;
+    padding: 0 50px 0 17px;
+    box-sizing: border-box;
+  }
+
+  .main-container-right table,
+  .main-container-right tbody,
+  .main-container-right tr,
+  .main-container-right th,
+  .main-container-right td {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  select, input[type=submit], input[type=text], input[type=email] {
+	  font-size: var(--fontsize-normal);
   }
 }

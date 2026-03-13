@@ -10,7 +10,7 @@ final class FortyHoursRepository
     public function fetchAllBookings(): array
     {
         // Quote identifiers because both table name and some columns can be problematic otherwise.
-        $sql = 'SELECT `start`, `end`, `title`, `public`, `completion_on`
+        $sql = 'SELECT `start`, `end`, `name`, `title`, `public`, `completion_on`
                 FROM `40hours`
                 ORDER BY `start`';
 
