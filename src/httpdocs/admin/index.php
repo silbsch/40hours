@@ -22,7 +22,7 @@ require_once dirname(__DIR__).'/../40hours/FortyHoursRepository.php';
 		$startTableHour = $numDays > 0 ? 0 : $startHour;
 		$endTableHour = $numDays > 0 ? 24 : $endHour;
 		// HTML-Tabelle erzeugen
-		$html = "<table>";
+		$html = "<table class='fortyhours-table'>";
 		// Tabellenkopf: Erste Spalte für die Stunden-Beschriftung, danach je eine Spalte pro Tag
 		$html.= "<tr><th></th>";
 		foreach ($datePeriod as $day) {
@@ -96,8 +96,6 @@ require_once dirname(__DIR__).'/../40hours/FortyHoursRepository.php';
 </head>
 
 <body>
-<div class='main-container'>
-	<div class='main-container-left'><?= get_table_html(FORTY_HOURS_START_DATE, FORTY_HOURS_END_DATE, $events) ?></div>
-</div>
+	<?= get_table_html(FORTY_HOURS_START_DATE, FORTY_HOURS_END_DATE, $events) ?>
 </body>
 </html>

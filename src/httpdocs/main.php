@@ -5,6 +5,19 @@ require_once dirname(__DIR__).'/40hours/helpers.php';
 require_once dirname(__DIR__).'/40hours/database.php';
 require_once dirname(__DIR__).'/40hours/FortyHoursRepository.php';
 				
+	function local_hour_exists(DateTimeInterface $day, int $hour, DateTimeZone $tz): bool
+	{
+		$wanted = sprintf('%s %02d:00:00', $day->format('Y-m-d'), $hour);
+		$dt = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $wanted, $tz);
+
+		if ($dt === false) {
+			return false;
+		}
+
+		// Wenn PHP die Zeit wegen DST "verschiebt", stimmt die formatierte Stunde nicht mehr.
+		return $dt->format('Y-m-d H:i:s') === $wanted;
+	}
+
 	function get_combobox_html($startdate, $enddate, $events) {
 		$comboHours=new DateTime($startdate->format('Y-m-d H:i'));
 		$comboHtml ="<select id='fselect' name='fortyhoursdate' required><option value=''>Bitte wähle einen Zeitraum</option>";
@@ -25,9 +38,10 @@ require_once dirname(__DIR__).'/40hours/FortyHoursRepository.php';
 	function get_table_html($startdate, $enddate, $events) {
 		// Erstelle einen Zeitraum (DatePeriod) für die Tage (Spalten).
 		// Wir starten am Datum des Startzeitpunkts und gehen bis einschließlich des Endtages.
-		$startDay = new DateTime($startdate->format('Y-m-d'));
-		$endDay   = new DateTime($enddate->format('Y-m-d'));
-		$endDay->modify('+1 day'); // Damit der Endtag in der DatePeriod enthalten ist
+		$tz = new DateTimeZone(TIMEZONE);
+		$startDay = new DateTimeImmutable($startdate->format('Y-m-d'), $tz);
+		$endDay   = new DateTimeImmutable($enddate->format('Y-m-d'), $tz);
+		$endDay   = $endDay->modify('+1 day'); // Damit der Endtag in der DatePeriod enthalten ist
 		
 		$dateInterval = new DateInterval('P1D');
 		$datePeriod   = new DatePeriod($startDay, $dateInterval, $endDay);
@@ -39,7 +53,7 @@ require_once dirname(__DIR__).'/40hours/FortyHoursRepository.php';
 		$startTableHour = $numDays > 0 ? 0 : $startHour;
 		$endTableHour = $numDays > 0 ? 24 : $endHour;
 		// HTML-Tabelle erzeugen
-		$html = "<table>";
+		$html = "<table class='fortyhours-table'>";
 		// Tabellenkopf: Erste Spalte für die Stunden-Beschriftung, danach je eine Spalte pro Tag
 		$html.= "<tr><th></th>";
 		foreach ($datePeriod as $day) {
@@ -56,8 +70,12 @@ require_once dirname(__DIR__).'/40hours/FortyHoursRepository.php';
 			
 			// Für jede Spalte (Tag) eine Zelle erzeugen
 			foreach ($datePeriod as $day) {
+				if (!local_hour_exists($day, $hour, $tz)) {
+                $html .= "<td class='fortyhours-booked'><small>Sommerzeit-Umstellung</small></td>";
+                continue;
+            }
 				// Erstelle einen Zeitstempel, der das jeweilige Tag und die Stunde repräsentiert
-				$cellTime = new DateTime(sprintf('%s %02d:00', $day->format('Y-m-d'), $hour));
+				$cellTime = new DateTimeImmutable(sprintf('%s %02d:00', $day->format('Y-m-d'), $hour), $tz);
 				$is_in_range = ($cellTime >= $startdate && $cellTime < $enddate);
 				$key = $cellTime->format('Y-m-d H:i');
 				
